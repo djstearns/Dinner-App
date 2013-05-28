@@ -1,6 +1,7 @@
 <?php
 class Recipe extends AppModel {
 	var $name = 'Recipe';
+	/*
 	var $validate = array(
 		'name' => array(
 			'notempty' => array(
@@ -64,7 +65,7 @@ class Recipe extends AppModel {
 		),
 	);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
+	*/
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
@@ -81,6 +82,21 @@ class Recipe extends AppModel {
 			'joinTable' => 'mealplans_recipes',
 			'foreignKey' => 'recipe_id',
 			'associationForeignKey' => 'mealplan_id',
+			'unique' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+			'deleteQuery' => '',
+			'insertQuery' => ''
+		),
+		'Yingredient' => array(
+			'className' => 'Yingredient',
+			'joinTable' => 'recipes_yingredients',
+			'foreignKey' => 'recipe_id',
+			'associationForeignKey' => 'yingredient_id',
 			'unique' => true,
 			'conditions' => '',
 			'fields' => '',

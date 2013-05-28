@@ -15,6 +15,32 @@ class UsersItemsController extends AppController {
 		}
 		$this->set('usersItem', $this->UsersItem->read(null, $id));
 	}
+	
+	function mobileindex() {
+		$this->UsersItem->recursive = 2;
+		$this->autoRender = false;
+		//$post['android_registration_id'] = $this->request->data['reg_id'];
+		//$data['hash'] = $this->Auth->password($post['password']);
+		$check = $this->UsersItem->find('all',
+			array(
+				'conditions' => array(
+					'User.id' => $this->Auth->User('id'),
+				)
+			)
+		);
+		$save = array();
+		if($check) {
+			
+			$response = $check;
+				
+		} else {
+			$response = array(
+				'logged' => false,
+				'message' => 'Invalid user'
+			);
+		}
+		echo json_encode($response);
+	}
 
 	function add() {
 		if (!empty($this->data)) {

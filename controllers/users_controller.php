@@ -279,6 +279,47 @@ class UsersController extends AppController {
 
     public function login() {
         $this->set('title_for_layout', __('Log in', true));
+		//debug($this->RequestHandler->ext);
+		if ($this->RequestHandler->ext === 'json'){ // && $this->request->data('token') && $this->request->data('hash')) {
+				//if($this->RequestHandler->isPost()) {
+					$this->autoRender = false;
+					$post['username'] = 'admin';//$_POST['username'];
+					$post['password'] = '098f6bcd4621d373cade4e832627b4f6';//$_POST['password'];
+					
+					//$post['android_registration_id'] = $this->request->data['reg_id'];
+					//$data['hash'] = $this->Auth->password($post['password']);
+					$check = $this->User->find('first',
+						array(
+							'conditions' => array(
+								'username' => $post['username'],
+								'password' => $post['password']
+							)
+						)
+					);
+					$save = array();
+					if($check) {
+						$save['id'] = $check['User']['id'];
+						$save['token'] = $this->Auth->password($post['username'].date('dmY'));
+						//$save['android_registration_id'] = $this->request->data['reg_id'];
+						$save['last_mobile_login'] = date('Y-m-d H:i:s');
+						if($this->User->save($save)) {
+							$response = array('logged' => true, 'token'=> $save['token'], 'email' => $check['User']['email'], 'username'=>$check['User']['username'], 'id'=>$check['User']['id']);
+							
+						} else {
+							 $response = array(
+								'logged' => false,
+								'message' => 'Invalid Username and/or Password'
+							);
+						}
+					} else {
+						$response = array(
+							'logged' => false,
+							'message' => 'Invalid Username and/or Password'
+						);
+					}
+					echo json_encode($response);
+				//}
+			}
     }
 
     public function logout() {

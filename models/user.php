@@ -104,6 +104,26 @@ class User extends AppModel {
             $this->Aro->save($aro);
         }
     }
+	
+		function hashPasswords($data) {
+        if (isset($data['User']['password'])) {
+            $data['User']['password'] = md5($data['User']['password']);
+            return $data;
+        }
+        return $data;
+    }
+	
+	public function authenticateMobile($token) {
+		return $this->find('first',
+			array(
+				'conditions' => array(
+					'token' => $token
+				)
+			)
+		);
+		
+		//return $this->find('first', array('conditions'=>array('User.id'=>7)));
+	}
 
 
 }
